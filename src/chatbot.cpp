@@ -45,6 +45,80 @@ ChatBot::~ChatBot()
 //// STUDENT CODE
 ////
 
+// copy constructor
+ChatBot::ChatBot(const ChatBot &source)
+{
+    std::cout << "Chatbot copy constructor:  content of instance " << &source << " to instance " << this << std::endl;
+
+    _image = new wxBitmap(*source._image);
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
+    _chatLogic->SetChatbotHandle(this);
+
+}
+
+// move constructor
+ChatBot::ChatBot(ChatBot &&source)
+{
+    std::cout << "Chatbot move contructor: moving instance " << &source << " to instance " << this << std::endl;
+
+    _image = source._image;
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
+    _chatLogic->SetChatbotHandle(this);
+
+    source._image = NULL;
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+    source._currentNode = nullptr;
+}
+
+// 5 : copy assignment operator
+ChatBot& ChatBot::operator=(ChatBot &&source)
+{
+    std::cout << "Chatbot: copy assignment operator: contents of " << &source << " to instance " << this << std::endl;
+    if (this == &source)
+        return *this;
+
+    _image = source._image;
+    _chatLogic = source._chatLogic;
+    _currentNode = source._currentNode;
+    _rootNode = source._rootNode;
+    _chatLogic->SetChatbotHandle(this);
+
+    source._image = nullptr;
+    source._chatLogic = nullptr;
+    source._currentNode = nullptr;
+    source._rootNode = NULL;
+
+    return *this;
+}
+
+//copy assignment operator
+ChatBot& ChatBot::operator=(const ChatBot &&source)
+{
+    std::cout << "Chatbot: copy assignment operator " << std::endl;
+
+    _image = new wxBitmap(*source._image);
+
+    if (this == &source)
+        return *this;
+
+    if (_image != NULL)
+    {
+        delete _image;
+    }
+
+    _image = new wxBitmap(*source._image);
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
+    _chatLogic->SetChatbotHandle(this);
+
+    return *this;
+}
 ////
 //// EOF STUDENT CODE
 
